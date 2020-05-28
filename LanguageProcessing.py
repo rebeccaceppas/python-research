@@ -61,15 +61,37 @@ word_counts = count_words(text)
 print(num_unique, sum(counts))
 
 import os
-
+import pandas as pd
 book_dir = './Books'
-
+stats = pd.DataFrame(columns=('language','author','title','length','unique'))
+title_num = 1
 
 for language in os.listdir(book_dir):
     for author in os.listdir(book_dir + '/' + language):
         for title in os.listdir(book_dir + '/' + language + '/' + author):
             inputfile = book_dir + '/' + language + '/' + author + '/' + title
-            print(inputfile)
             text = read_book(inputfile)
             (num_unique, counts) = word_stats(count_words(text))
-        
+            stats.loc[title_num] = language, author.capitalize(), title.replace('.txt',''), sum(counts), num_unique
+            title_num += 1
+
+from matplotlib import pyplot
+
+pyplot.plot(stats.length, stats.unique, 'bo')
+pyplot.savefig('length vs unique.jpg')
+pyplot.show()
+
+pyplot.figure(figsize=(10,10))
+subset = stats[stats.language=='English']
+pyplot.loglog(subset.length, subset.unique, 'o', label='English', color='crimson')
+subset = stats[stats.language=='French']
+pyplot.loglog(subset.length, subset.unique, 'o', label='French', color='forestgreen')
+subset = stats[stats.language=='German']
+pyplot.loglog(subset.length, subset.unique, 'o', label='German', color='orange')
+subset = stats[stats.language=='Portuguese']
+pyplot.loglog(subset.length, subset.unique, 'o', label='Portuguese', color='blueviolet')
+pyplot.legend()
+pyplot.xlabel('Book length')
+pyplot.ylabel('Number of unique words')
+pyplot.savefig('Language plot.jpg')
+pyplot.show()
