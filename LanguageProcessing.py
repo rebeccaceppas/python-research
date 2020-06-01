@@ -58,7 +58,6 @@ word_counts = count_words(text)
 text = read_book('./Books/German/shakespeare/Romeo und Julia.txt')
 word_counts = count_words(text)
 (num_unique, counts) = word_stats(word_counts)
-print(num_unique, sum(counts))
 
 import os
 import pandas as pd
