@@ -62,10 +62,19 @@ from sklearn.linear_model import LinearRegression
 
 lm = LinearRegression(fit_intercept=True)
 lm.fit(X, y)
-print(lm.intercept_)
-print(lm.coef_)
+lm.intercept_
+lm.coef_
 
 X_0 = np.array([2, 4])
-print(lm.predict(X_0.reshape(1,-1)))
+lm.predict(X_0.reshape(1,-1))
+lm.score(X, y)
 
-print(lm.score(X, y))
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.5, random_state=1)
+
+lm = LinearRegression(fit_intercept=True)
+lm.fit(X_train, y_train)
+lm.score(X_test, y_test)
+
+
